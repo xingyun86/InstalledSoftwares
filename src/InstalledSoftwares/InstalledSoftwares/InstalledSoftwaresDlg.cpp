@@ -176,10 +176,10 @@ void CInstalledSoftwaresDlg::OnBnClickedOk()
 	//CDialogEx::OnOK();
 	CListCtrl* pListCtrl = (CListCtrl*)GetDlgItem(IDC_LIST_SOFTWARE);
 	pListCtrl->DeleteAllItems();
-	AllRegKeyListUninstall(pListCtrl, HKEY_LOCAL_MACHINE, TEXT("SoftWare\\Microsoft\\Windows\\CurrentVersion\\Uninstall"));
-	AllRegKeyListUninstall(pListCtrl, HKEY_LOCAL_MACHINE, TEXT("SoftWare\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall"));
-	AllRegKeyListUninstall(pListCtrl, HKEY_CURRENT_USER, TEXT("SoftWare\\Microsoft\\Windows\\CurrentVersion\\Uninstall"));
-	AllRegKeyListUninstall(pListCtrl, HKEY_CURRENT_USER, TEXT("SoftWare\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall"));
+	AllRegKeyListUninstall(pListCtrl, HKEY_LOCAL_MACHINE, TEXT("SoftWare\\Microsoft\\Windows\\CurrentVersion\\Uninstall"), KEY_WOW64_64KEY);
+	AllRegKeyListUninstall(pListCtrl, HKEY_LOCAL_MACHINE, TEXT("SoftWare\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall"), KEY_WOW64_32KEY);
+	AllRegKeyListUninstall(pListCtrl, HKEY_CURRENT_USER, TEXT("SoftWare\\Microsoft\\Windows\\CurrentVersion\\Uninstall"), 0);
+	AllRegKeyListUninstall(pListCtrl, HKEY_CURRENT_USER, TEXT("SoftWare\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall"), 0);
 }
 
 

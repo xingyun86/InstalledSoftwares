@@ -43,13 +43,13 @@ protected:
 	afx_msg void OnBnClickedOk();
 	DECLARE_MESSAGE_MAP()
 private:
-	BOOL AllRegKeyListInstalled(HKEY hKey, LPCTSTR szDesKeyItem)
+	BOOL AllRegKeyListInstalled(HKEY hKey, LPCTSTR szDesKeyItem, DWORD dwAccessMask)
 	{
 		HKEY hSubKey = NULL;
 		DWORD dwIndex = 0;
 		LSTATUS lResult;
 
-		lResult = RegOpenKeyEx(hKey, szDesKeyItem, 0, KEY_READ, &hSubKey);
+		lResult = RegOpenKeyEx(hKey, szDesKeyItem, 0, KEY_READ | dwAccessMask, &hSubKey);
 		if (ERROR_SUCCESS == lResult)
 		{
 			DWORD dwRegTypeSZ = REG_SZ;
@@ -62,7 +62,7 @@ private:
 			while (lResult == ERROR_SUCCESS && lResult != ERROR_MORE_DATA)
 			{
 				HKEY hSubKeyItem = NULL;
-				if (::RegOpenKeyEx(hSubKey, tzPackageCode, 0, KEY_READ, &hSubKeyItem) == ERROR_SUCCESS)
+				if (::RegOpenKeyEx(hSubKey, tzPackageCode, 0, KEY_READ | dwAccessMask, &hSubKeyItem) == ERROR_SUCCESS)
 				{
 					memset(tzProductName, 0, sizeof(tzProductName));
 					cbProductName = sizeof(tzProductName);
@@ -84,13 +84,13 @@ private:
 		RegCloseKey(hSubKey);
 		return FALSE;
 	}
-	BOOL AllRegKeyListUninstall(CListCtrl* pListCtrl, HKEY hKey, LPCTSTR szDesKeyItem)
+	BOOL AllRegKeyListUninstall(CListCtrl* pListCtrl, HKEY hKey, LPCTSTR szDesKeyItem, DWORD dwAccessMask)
 	{
 		HKEY hSubKey = NULL;
 		DWORD dwIndex = 0;
 		LSTATUS lResult = NULL;
-
-		lResult = RegOpenKeyEx(hKey, szDesKeyItem, 0, KEY_READ, &hSubKey);		// 打开注册表
+		
+		lResult = RegOpenKeyEx(hKey, szDesKeyItem, 0, KEY_READ | dwAccessMask, &hSubKey);		// 打开注册表
 		if (ERROR_SUCCESS == lResult)
 		{
 			int nId = 0;
@@ -116,7 +116,7 @@ private:
 			while (lResult == ERROR_SUCCESS && lResult != ERROR_MORE_DATA)
 			{
 				HKEY hSubKeyItem = NULL;
-				if (::RegOpenKeyEx(hSubKey, tzName, 0, KEY_READ, &hSubKeyItem) == ERROR_SUCCESS)
+				if (::RegOpenKeyEx(hSubKey, tzName, 0, KEY_READ | dwAccessMask, &hSubKeyItem) == ERROR_SUCCESS)
 				{
 					memset(tzDisplayName, 0, sizeof(tzDisplayName));
 					memset(tzPublisher, 0, sizeof(tzPublisher));
